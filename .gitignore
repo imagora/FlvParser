@@ -1,0 +1,12 @@
+# ignore build files
+build*
+*.user
+.objs
+Makefile
+bin/
+.qmake.stash
+
+# ignore moc files
+moc_*
+qrc_*.cpp
+gump_plugin_import.cpp

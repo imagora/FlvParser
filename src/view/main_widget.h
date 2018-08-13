@@ -9,6 +9,9 @@
 #include <QTreeView>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QStandardItemModel>
+#include <QNetworkReply>
+#include <QNetworkAccessManager>
 
 
 namespace flv_parser {
@@ -19,12 +22,22 @@ class MainWidget : public QWidget {
 
  public:
   MainWidget(QWidget *parent = nullptr);
-  ~MainWidget();
+
+  virtual ~MainWidget();
+
+ private slots:
+  void OnPlay();
+
+ private:
+  void InitWidget();
+
+  void InitSlots();
 
  private:
   QLineEdit *url_;
   QPushButton *play_;
-  QTreeView *info_;
+  QTreeView *info_view_;
+  QStandardItemModel *info_model_;
 };
 
 

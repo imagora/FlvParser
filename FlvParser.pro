@@ -30,23 +30,26 @@ SOURCES += \
     src/controller/http_client.cpp \
     src/model/flv_header.cpp \
     src/model/flv_body.cpp \
-    src/model/flv_body.cpp \
     src/model/flv_tag.cpp \
     src/model/flv_video.cpp \
     src/model/flv_audio.cpp \
-    src/controller/flv_parser.cpp
+    src/controller/flv_parser.cpp \
+    src/commons/read_bytes.cpp \
+    src/model/flv_data.cpp \
+    src/model/flv_script.cpp
 HEADERS  += \
     src/view/main_widget.h \
     src/controller/http_client.h \
     src/model/flv_header.h \
-    src/model/flv_body.h \
     src/model/flv_body.h \
     src/model/flv_tag.h \
     src/model/flv_data.h \
     src/model/flv_video.h \
     src/model/flv_audio.h \
     src/commons/error_code.h \
-    src/controller/flv_parser.h
+    src/controller/flv_parser.h \
+    src/commons/read_bytes.h \
+    src/model/flv_script.h
 RESOURCES += \
     resource.qrc
 ICON = icon.icns

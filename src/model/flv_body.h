@@ -16,7 +16,7 @@ class FlvBody {
  public:
   FlvBody();
 
-  int ParseData(const std::string &data);
+  size_t ParseData(const std::string &data);
 
  private:
   uint32_t previous_size_;

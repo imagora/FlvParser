@@ -16,7 +16,7 @@ class FlvHeader {
  public:
   FlvHeader();
 
-  int ParseData(const std::string &data);
+  size_t ParseData(const std::string &data);
 
  private:
   uint8_t signature_[3];

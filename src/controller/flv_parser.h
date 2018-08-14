@@ -7,6 +7,7 @@
 
 #include <list>
 #include <string>
+#include <QObject>
 #include "model/flv_header.h"
 #include "model/flv_body.h"
 
@@ -14,17 +15,21 @@
 namespace flv_parser {
 
 
-class FlvParser {
+class FlvParser : public QObject {
+  Q_OBJECT
+
   typedef std::list<FlvBody> FlvBodys;
  public:
-  FlvParser();
+  FlvParser(QObject *parent = nullptr);
 
   ~FlvParser();
 
-  int ParseData(const std::string &data);
+  size_t ParseData(const std::string &data);
 
  private:
+  bool has_header_;
   std::string buffer_;
+
   FlvHeader flv_header_;
   FlvBodys flv_bodys_;
 };

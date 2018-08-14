@@ -20,18 +20,19 @@ class HttpClient : public QObject {
 
   virtual ~HttpClient();
 
- public slots:
+  void HttpRequest(const QUrl &url);
+
+  void HttpAbort();
+
+ signals:
   void ReadyRead(const std::string &data);
 
- private slots:
-  void HttpRedirected(const QUrl &url);
+  void Finished();
 
+ private slots:
   void HttpFinished();
 
   void HttpReadyRead();
-
- private:
-  void HttpRequest(const QUrl &url);
 
  private:
   QNetworkAccessManager *net_mgr_;

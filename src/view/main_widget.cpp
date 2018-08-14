@@ -20,7 +20,23 @@ MainWidget::~MainWidget() {
 }
 
 void MainWidget::OnPlay() {
-//  HttpRequest(url_->text());
+  if (url_->text().isEmpty()) return;
+
+  if (play_->text() == "Play") {
+    play_->setText("Stop");
+    http_client_->HttpRequest(url_->text());
+  } else {
+    http_client_->HttpAbort();
+  }
+}
+
+void MainWidget::ReadyRead(const std::string &data) {
+  size_t read_size = flv_parser_->ParseData(data);
+  qInfo() << "http callback read data size: " << read_size;
+}
+
+void MainWidget::Finished() {
+  play_->setText("Play");
 }
 
 void MainWidget::InitWidget() {
@@ -38,10 +54,16 @@ void MainWidget::InitWidget() {
   layout->addWidget(info_view_, 1, 0);
 
   this->setLayout(layout);
+
+  http_client_ = new HttpClient(this);
+  flv_parser_ = new FlvParser(this);
 }
 
 void MainWidget::InitSlots() {
   connect(play_, SIGNAL(released()), this, SLOT(OnPlay()));
+  connect(http_client_, SIGNAL(ReadyRead(const std::string &)), this,
+          SLOT(ReadyRead(const std::string &)));
+  connect(http_client_, SIGNAL(Finished()),  this, SLOT(Finished()));
 }
 
 }  // namespace flv_parser

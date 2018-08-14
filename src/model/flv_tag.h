@@ -13,11 +13,25 @@
 namespace flv_parser {
 
 
+enum TagType {
+  AUDIO_TAG = 8,
+  VIDEO_TAG = 9,
+  SCRIPT_TAG = 18
+};
+
+
 class FlvTag {
  public:
   FlvTag();
 
-  int ParseData(const std::string &data);
+  size_t ParseData(const std::string &data, size_t pos);
+
+ private:
+  size_t ParseAudio(const std::string &data, size_t pos);
+
+  size_t ParseVideo(const std::string &data, size_t pos);
+
+  size_t ParseScript(const std::string &data, size_t pos);
 
  private:
   uint8_t reserved_;
@@ -27,7 +41,7 @@ class FlvTag {
   uint32_t timestamp_;
   uint8_t timestamp_extended_;
   uint32_t stream_id_;
-  std::unique_ptr<FlvData> data_;
+  std::shared_ptr<FlvData> data_;
 };
 
 

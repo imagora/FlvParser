@@ -12,18 +12,13 @@
 namespace flv_parser {
 
 
-class FlvData {
- public:
-  FlvData();
+uint8_t ReadByte(const char *data);
 
-  virtual ~FlvData();
+uint16_t Read2Bytes(const char *data);
 
-  virtual size_t ParseData(const std::string &data, size_t pos, size_t length);
+uint32_t Read3Bytes(const char *data);
 
- private:
-  std::string data_;
-};
+uint32_t Read4Bytes(const char *data);
 
 
 }  // namespace flv_parser
-

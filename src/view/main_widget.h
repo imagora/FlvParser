@@ -13,6 +13,9 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 
+#include "controller/http_client.h"
+#include "controller/flv_parser.h"
+
 
 namespace flv_parser {
 
@@ -28,6 +31,10 @@ class MainWidget : public QWidget {
  private slots:
   void OnPlay();
 
+  void ReadyRead(const std::string &data);
+
+  void Finished();
+
  private:
   void InitWidget();
 
@@ -38,6 +45,9 @@ class MainWidget : public QWidget {
   QPushButton *play_;
   QTreeView *info_view_;
   QStandardItemModel *info_model_;
+
+  HttpClient *http_client_;
+  FlvParser *flv_parser_;
 };
 
 

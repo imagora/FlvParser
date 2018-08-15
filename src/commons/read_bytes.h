@@ -20,5 +20,7 @@ uint32_t Read3Bytes(const char *data);
 
 uint32_t Read4Bytes(const char *data);
 
+uint64_t Read8Bytes(const char *data);
+
 
 }  // namespace flv_parser

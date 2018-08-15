@@ -17,6 +17,8 @@ FlvBody::FlvBody() {
 }
 
 size_t FlvBody::ParseData(const std::string &data) {
+  if (data.size() < 4) return 0;
+
   size_t read_pos = 0;
   previous_size_ = Read4Bytes(&data[read_pos]);
   read_pos += 4;

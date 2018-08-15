@@ -24,7 +24,12 @@ class FlvParser : public QObject {
 
   ~FlvParser();
 
-  size_t ParseData(const std::string &data);
+  bool ParseData(const std::string &data);
+
+  void Reset();
+
+ private:
+  size_t ParseBody();
 
  private:
   bool has_header_;

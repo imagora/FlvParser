@@ -3,7 +3,8 @@
 
 
 #include "controller/flv_parser.h"
-#include "commons/error_code.h"
+
+#include <QDebug>
 
 
 namespace flv_parser {
@@ -17,19 +18,34 @@ FlvParser::FlvParser(QObject *parent)
 FlvParser::~FlvParser() {
 }
 
-size_t FlvParser::ParseData(const std::string &data) {
+bool FlvParser::ParseData(const std::string &data) {
   if (!has_header_) {
     size_t read_size = flv_header_.ParseData(data);
     if (read_size > 0) {
       has_header_ = true;
       buffer_ = std::string(data, read_size, data.size());
-      return read_size;
     } else {
-      return 0;
+      return false;
     }
+  } else {
+    buffer_ += data;
   }
 
-  buffer_ += data;
+  size_t body_size = 0;
+  qInfo() << "read flv body buffer size: " << buffer_.size();
+  while ((body_size = ParseBody()) > 0) {
+    qInfo() << "read flv body size: " << body_size
+            << ", buffer size: " << buffer_.size();
+  }
+  return true;
+}
+
+void FlvParser::Reset() {
+  buffer_.clear();
+  has_header_ = false;
+}
+
+size_t FlvParser::ParseBody() {
   FlvBody body;
   size_t read_size = body.ParseData(buffer_);
   if (read_size > 0) {
@@ -37,7 +53,6 @@ size_t FlvParser::ParseData(const std::string &data) {
     buffer_.erase(0, read_size);
     return read_size;
   }
-
   return 0;
 }
 

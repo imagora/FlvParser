@@ -28,7 +28,7 @@ size_t FlvVideo::ParseData(const std::string &data, size_t pos, size_t length) {
     read_pos += 3;
   }
 
-  FlvData::ParseData(data, read_pos, length - (read_pos - pos));
+  FlvData::ParseData(data, read_pos, length - read_pos + pos);
   return length;
 }
 

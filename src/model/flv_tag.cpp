@@ -18,14 +18,14 @@
 namespace flv_parser {
 
 
-static const size_t TAG_HEADER_SIZE = 11;
+static const size_t kTagHeaderSize = 11;
 
 
 FlvTag::FlvTag() {
 }
 
 size_t FlvTag::ParseData(const std::string &data, size_t pos) {
-  if (data.size() < TAG_HEADER_SIZE + pos) {
+  if (data.size() < kTagHeaderSize + pos) {
     qWarning() << "read flv tag failed, data size: " << data.size();
     return 0;
   }
@@ -70,13 +70,12 @@ size_t FlvTag::ParseData(const std::string &data, size_t pos) {
     break;
   }
 
-  read_data_size = size_;
   qInfo() << "read flv tag, reserved: " << reserved_ << ", filter: " << filter_
           << ", tag type: " << type_ << ", data size: " << size_
           << ", timestamp: " << timestamp_ << ", timestamp extended: "
           << timestamp_extended_ << ", stream id: " << stream_id_
           << ", data size: " << read_data_size << ", read pos: " << read_pos;
-  return read_data_size + TAG_HEADER_SIZE;
+  return read_data_size + kTagHeaderSize;
 }
 
 size_t FlvTag::ParseAudio(const std::string &data, size_t pos) {

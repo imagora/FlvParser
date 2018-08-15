@@ -31,12 +31,15 @@ void MainWidget::OnPlay() {
 }
 
 void MainWidget::ReadyRead(const std::string &data) {
-  size_t read_size = flv_parser_->ParseData(data);
-  qInfo() << "http callback read data size: " << read_size;
+  if (!flv_parser_->ParseData(data)) {
+    qCritical() << "parse flv error, close the http connection";
+    http_client_->HttpAbort();
+  }
 }
 
 void MainWidget::Finished() {
   play_->setText("Play");
+  flv_parser_->Reset();
 }
 
 void MainWidget::InitWidget() {

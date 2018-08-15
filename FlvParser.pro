@@ -11,7 +11,7 @@ include(gitversion.pri)
 
 #---------------------------------------------------------------------
 # PART 2: target, library, flags
-TARGET = bin/Gump
+TARGET = bin/FlvParser
 INCLUDEPATH += src
 INCLUDEPATH += /usr/local/include
 LIBS += -L/usr/lib -L/usr/local/lib -llog4cplus
@@ -20,7 +20,7 @@ DEFINES += BUILD_VERSION=\\\"$$VERSION\\\"
 
 #---------------------------------------------------------------------
 # PART 3: Clean
-QMAKE_CLEAN += $(TARGET) $(QMAKE_TARGET) bin/Gump
+QMAKE_CLEAN += $(TARGET) $(QMAKE_TARGET) bin/FlvParser
 
 #---------------------------------------------------------------------
 # PART 4: Input

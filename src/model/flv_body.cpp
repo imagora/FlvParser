@@ -4,6 +4,7 @@
 
 #include "model/flv_body.h"
 
+#include <sstream>
 #include <QDebug>
 
 #include "commons/read_bytes.h"
@@ -13,6 +14,7 @@ namespace flv_parser {
 
 
 FlvBody::FlvBody() {
+  previous_size_ = 0;
 }
 
 size_t FlvBody::ParseData(const std::string &data) {
@@ -29,6 +31,18 @@ size_t FlvBody::ParseData(const std::string &data) {
     return tag_size + read_pos;
   }
   return 0;
+}
+
+std::string FlvBody::Type() {
+  return tag_.Type();
+}
+
+std::string FlvBody::Info() {
+  std::string tag_info = tag_.Info();
+  std::stringstream ss;
+  ss << "PreSize:" << previous_size_ << (tag_info.empty() ? "" : "|")
+     << tag_info;
+  return ss.str();
 }
 
 

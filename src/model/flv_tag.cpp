@@ -5,6 +5,7 @@
 #include "model/flv_tag.h"
 
 #include <memory>
+#include <sstream>
 #include <QDebug>
 
 #include "commons/read_bytes.h"
@@ -21,6 +22,13 @@ static const size_t kTagHeaderSize = 11;
 
 
 FlvTag::FlvTag() {
+  reserved_ = 0;
+  filter_ = 0;
+  type_ = 0;
+  size_ = 0;
+  timestamp_ = 0;
+  timestamp_extended_ = 0;
+  stream_id_ = 0;
 }
 
 size_t FlvTag::ParseData(const std::string &data, size_t pos) {
@@ -75,6 +83,30 @@ size_t FlvTag::ParseData(const std::string &data, size_t pos) {
           << timestamp_extended_ << ", stream id: " << stream_id_
           << ", data size: " << read_data_size << ", read pos: " << read_pos;
   return read_data_size + kTagHeaderSize;
+}
+
+std::string FlvTag::Type() {
+  switch (type_) {
+    case AUDIO_TAG:
+      return "Audio";
+    case VIDEO_TAG:
+      return "Video";
+    case SCRIPT_TAG:
+      return "Script";
+    default:
+      return "Unknown";
+  }
+}
+
+std::string FlvTag::Info() {
+  std::string data_info = data_->Info();
+  std::stringstream ss;
+  ss << "Filter:" << static_cast<uint32_t>(filter_) << "|"
+     << "Size:" << size_ << "|"
+     << "Timestamp:"
+     << (static_cast<uint32_t>(timestamp_extended_) << 24 | timestamp_)
+     << (data_info.empty() ? "" : "|") << data_info;
+  return ss.str();
 }
 
 size_t FlvTag::ParseAudio(const std::string &data, size_t pos) {

@@ -26,6 +26,10 @@ class FlvTag {
 
   size_t ParseData(const std::string &data, size_t pos);
 
+  std::string Type();
+
+  std::string Info();
+
  private:
   size_t ParseAudio(const std::string &data, size_t pos);
 

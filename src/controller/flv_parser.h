@@ -28,6 +28,9 @@ class FlvParser : public QObject {
 
   void Reset();
 
+ signals:
+  void ParsedPacket(const std::string &type, const std::string &info);
+
  private:
   size_t ParseHeader();
 

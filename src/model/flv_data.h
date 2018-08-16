@@ -20,6 +20,8 @@ class FlvData {
 
   virtual size_t ParseData(const std::string &data, size_t pos, size_t length);
 
+  virtual std::string Info();
+
  private:
   std::string data_;
 };

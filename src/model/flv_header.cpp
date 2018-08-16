@@ -4,6 +4,7 @@
 
 #include "model/flv_header.h"
 
+#include <sstream>
 #include <QDebug>
 
 #include "commons/read_bytes.h"
@@ -52,6 +53,20 @@ size_t FlvHeader::ParseData(const std::string &data) {
   }
 
   return read_pos;
+}
+
+std::string FlvHeader::Type() {
+  return "Header";
+}
+
+std::string FlvHeader::Info() {
+  std::stringstream ss;
+  ss << std::string(reinterpret_cast<char *>(signature_), 3) << "|"
+     << "Version:" << static_cast<uint32_t>(version_) << "|"
+     << (audio_flag_ == 1 ? "Audio|" : "")
+     << (video_flag_ == 1 ? "Video|" : "")
+     << data_offset_;
+  return ss.str();
 }
 
 

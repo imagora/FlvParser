@@ -46,6 +46,7 @@ size_t FlvParser::ParseHeader() {
   size_t read_size = flv_header_.ParseData(buffer_);
   if (read_size > 0) {
     has_header_ = true;
+    emit ParsedPacket(flv_header_.Type(), flv_header_.Info());
   }
   return read_size;
 }
@@ -55,6 +56,7 @@ size_t FlvParser::ParseBody() {
   size_t read_size = body.ParseData(buffer_);
   if (read_size > 0) {
     flv_bodys_.push_back(body);
+    emit ParsedPacket(body.Type(), body.Info());
   }
   return read_size;
 }

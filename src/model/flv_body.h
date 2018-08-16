@@ -18,6 +18,10 @@ class FlvBody {
 
   size_t ParseData(const std::string &data);
 
+  std::string Type();
+
+  std::string Info();
+
  private:
   uint32_t previous_size_;
   FlvTag tag_;

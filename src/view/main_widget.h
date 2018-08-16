@@ -35,6 +35,8 @@ class MainWidget : public QWidget {
 
   void Finished();
 
+  void OnFlvPacket(const std::string &type, const std::string &info);
+
  private:
   void InitWidget();
 

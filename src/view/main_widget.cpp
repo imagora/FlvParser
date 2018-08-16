@@ -24,6 +24,8 @@ void MainWidget::OnPlay() {
 
   if (play_->text() == "Play") {
     play_->setText("Stop");
+    info_model_->clear();
+    info_model_->setHorizontalHeaderLabels(QStringList() << "Type" << "Info");
     http_client_->HttpRequest(url_->text());
   } else {
     http_client_->HttpAbort();
@@ -40,6 +42,12 @@ void MainWidget::ReadyRead(const std::string &data) {
 void MainWidget::Finished() {
   play_->setText("Play");
   flv_parser_->Reset();
+}
+
+void MainWidget::OnFlvPacket(const std::string &type, const std::string &info) {
+  info_model_->appendRow(QList<QStandardItem *>()
+                         << new QStandardItem(type.c_str())
+                         << new QStandardItem(info.c_str()));
 }
 
 void MainWidget::InitWidget() {
@@ -67,6 +75,9 @@ void MainWidget::InitSlots() {
   connect(http_client_, SIGNAL(ReadyRead(const std::string &)), this,
           SLOT(ReadyRead(const std::string &)));
   connect(http_client_, SIGNAL(Finished()),  this, SLOT(Finished()));
+  connect(flv_parser_,
+          SIGNAL(ParsedPacket(const std::string &, const std::string &)), this,
+          SLOT(OnFlvPacket(const std::string &, const std::string &)));
 }
 
 }  // namespace flv_parser

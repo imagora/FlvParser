@@ -12,30 +12,27 @@ namespace flv_parser {
 
 FlvParser::FlvParser(QObject *parent)
   : QObject(parent) {
-  has_header_ = false;
+  Reset();
 }
 
 FlvParser::~FlvParser() {
 }
 
 bool FlvParser::ParseData(const std::string &data) {
+  buffer_ += data;
+
   if (!has_header_) {
-    size_t read_size = flv_header_.ParseData(data);
-    if (read_size > 0) {
-      has_header_ = true;
-      buffer_ = std::string(data, read_size, data.size());
+    size_t header_size = ParseHeader();
+    if (header_size > 0) {
+      buffer_.erase(0, header_size);
     } else {
       return false;
     }
-  } else {
-    buffer_ += data;
   }
 
   size_t body_size = 0;
-  qInfo() << "read flv body buffer size: " << buffer_.size();
   while ((body_size = ParseBody()) > 0) {
-    qInfo() << "read flv body size: " << body_size
-            << ", buffer size: " << buffer_.size();
+    buffer_.erase(0, body_size);
   }
   return true;
 }
@@ -45,15 +42,21 @@ void FlvParser::Reset() {
   has_header_ = false;
 }
 
+size_t FlvParser::ParseHeader() {
+  size_t read_size = flv_header_.ParseData(buffer_);
+  if (read_size > 0) {
+    has_header_ = true;
+  }
+  return read_size;
+}
+
 size_t FlvParser::ParseBody() {
   FlvBody body;
   size_t read_size = body.ParseData(buffer_);
   if (read_size > 0) {
     flv_bodys_.push_back(body);
-    buffer_.erase(0, read_size);
-    return read_size;
   }
-  return 0;
+  return read_size;
 }
 
 

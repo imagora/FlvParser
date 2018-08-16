@@ -29,6 +29,8 @@ class FlvParser : public QObject {
   void Reset();
 
  private:
+  size_t ParseHeader();
+
   size_t ParseBody();
 
  private:

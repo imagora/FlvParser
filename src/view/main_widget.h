@@ -52,7 +52,9 @@ class MainWidget : public QWidget {
 
   void Reset();
 
-  void ShowDetail(int index);
+  void Show(int index);
+
+  void ShowDetail(const Json::Value &root, QStandardItem *root_item = nullptr);
 
  private:
   QLineEdit *url_;

@@ -42,6 +42,20 @@ void FlvParser::Reset() {
   has_header_ = false;
 }
 
+Json::Value FlvParser::Detail(int index) {
+  if (index == 0) {
+    return flv_header_.Detail();
+  }
+  return Json::Value();
+}
+
+std::string FlvParser::Data(int index) {
+  if (index == 0) {
+    return "";
+  }
+  return "";
+}
+
 size_t FlvParser::ParseHeader() {
   size_t read_size = flv_header_.ParseData(buffer_);
   if (read_size > 0) {

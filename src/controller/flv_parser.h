@@ -28,6 +28,10 @@ class FlvParser : public QObject {
 
   void Reset();
 
+  Json::Value Detail(int index);
+
+  std::string Data(int index);
+
  signals:
   void ParsedPacket(const std::string &type, const std::string &info);
 

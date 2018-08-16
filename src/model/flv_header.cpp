@@ -69,6 +69,18 @@ std::string FlvHeader::Info() {
   return ss.str();
 }
 
+Json::Value FlvHeader::Detail() {
+  Json::Value detail(Json::objectValue);
+  detail["Signature"] = Json::Value("FLV");
+  detail["Version"] = Json::Value(version_);
+  detail["TypeFlagsReserved1"] = reserved1_;
+  detail["TypeFlagsAudio"] = Json::Value(audio_flag_);
+  detail["TypeFlagsReserved2"] = reserved2_;
+  detail["TypeFlagsVideo"] = video_flag_;
+  detail["DataOffset"] = data_offset_;
+  return detail;
+}
+
 
 }  // namespace flv_parser
 

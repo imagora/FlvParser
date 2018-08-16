@@ -8,6 +8,8 @@
 #include <inttypes.h>
 #include <string>
 
+#include <json/json.h>
+
 
 namespace flv_parser {
 
@@ -21,6 +23,8 @@ class FlvHeader {
   std::string Type();
 
   std::string Info();
+
+  Json::Value Detail();
 
  private:
   uint8_t signature_[3];

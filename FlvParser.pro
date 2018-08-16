@@ -16,6 +16,16 @@ INCLUDEPATH += src
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += BUILD_VERSION=\\\"$$VERSION\\\"
 
+win32 {
+  INCLUDEPATH += third_party/win32/jsoncpp/include
+  LIBS += -Lthird_party/win32/jsoncpp/lib -ljsoncpp
+}
+
+macx {
+  INCLUDEPATH += $$PWD/third_party/mac/jsoncpp/include
+  LIBS += -L$$PWD/third_party/mac/jsoncpp/lib -ljsoncpp
+}
+
 #---------------------------------------------------------------------
 # PART 3: Clean
 QMAKE_CLEAN += $(TARGET) $(QMAKE_TARGET) bin/FlvParser

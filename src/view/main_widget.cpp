@@ -29,7 +29,7 @@ void MainWidget::keyReleaseEvent(QKeyEvent *event) {
     return;
   }
 
-  ShowDetail(info_view_->currentIndex().row());
+  Show(info_view_->currentIndex().row());
 }
 
 void MainWidget::OnPlay() {
@@ -64,7 +64,7 @@ void MainWidget::OnFlvPacket(const std::string &type, const std::string &info) {
 }
 
 void MainWidget::OnSelectPacket(const QModelIndex &index) {
-  ShowDetail(index.row());
+  Show(index.row());
 }
 
 void MainWidget::InitWidget() {
@@ -117,8 +117,44 @@ void MainWidget::Reset() {
   detail_model_->setHorizontalHeaderLabels(QStringList() << "Detail");
 }
 
-void MainWidget::ShowDetail(int index) {
-  qInfo() << "detail row: " << index;
+void MainWidget::Show(int index) {
+  detail_model_->clear();
+  detail_model_->setHorizontalHeaderLabels(QStringList() << "Detail");
+  Json::Value root = flv_parser_->Detail(index);
+  ShowDetail(root);
+}
+
+void MainWidget::ShowDetail(const Json::Value &root, QStandardItem *root_item) {
+  Json::Value::Members members = root.getMemberNames();
+  for (auto iter = members.begin(); iter != members.end(); ++iter) {
+    QStandardItem *name_item = new QStandardItem(iter->c_str());
+    name_item->setEditable(false);
+    if (root_item == nullptr) {
+      detail_model_->appendRow(name_item);
+    } else {
+      root_item->appendRow(name_item);
+    }
+
+    uint32_t value_type = root[*iter].type();
+    if (value_type == Json::objectValue) {
+      ShowDetail(root[*iter], name_item);
+    } else if (value_type == Json::arrayValue) {
+      for (uint32_t i = 0; i < root[*iter].size(); ++i) {
+        ShowDetail(root[*iter][i], name_item);
+      }
+    } else {
+      QStandardItem *info_item =
+          new QStandardItem(root[*iter].asString().c_str());
+      info_item->setEditable(false);
+
+      if (root_item == nullptr) {
+        detail_model_->setItem(detail_model_->indexFromItem(name_item).row(), 1,
+                               info_item);
+      } else {
+        root_item->setChild(name_item->index().row(), 1, info_item);
+      }
+    }
+  }
 }
 
 }  // namespace flv_parser

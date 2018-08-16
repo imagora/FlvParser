@@ -90,8 +90,8 @@ equals(GIT_DIR, undefined) {
 
 # Here we process the build date and time
 win32 {
-    BUILD_DATE = $$system( date /t )
-    BUILD_TIME = $$system( echo %time% )
+    BUILD_DATE = $$system( echo '%date:~8,2%/%date:~5,2%/%date:~0,4%' )
+    BUILD_TIME = $$system( echo '%time:~0,2%:%time:~3,2%:%time:~6,2%' )
 } else {
     BUILD_DATE = $$system( date "+%d/%m/%Y/%H:%M:%S" )
     BUILD_TIME = $$section(BUILD_DATE, /, 3, 3)

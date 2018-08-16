@@ -13,6 +13,7 @@
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 
+#include "view/main_menubar.h"
 #include "controller/http_client.h"
 #include "controller/flv_parser.h"
 
@@ -47,6 +48,8 @@ class MainWidget : public QWidget {
   QPushButton *play_;
   QTreeView *info_view_;
   QStandardItemModel *info_model_;
+
+  MenuBar *menu_bar_;
 
   HttpClient *http_client_;
   FlvParser *flv_parser_;

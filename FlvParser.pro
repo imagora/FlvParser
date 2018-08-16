@@ -34,7 +34,9 @@ SOURCES += \
     src/controller/flv_parser.cpp \
     src/commons/read_bytes.cpp \
     src/model/flv_data.cpp \
-    src/model/flv_script.cpp
+    src/model/flv_script.cpp \
+    src/view/about_dialog.cpp \
+    src/view/main_menubar.cpp
 HEADERS  += \
     src/view/main_widget.h \
     src/controller/http_client.h \
@@ -46,7 +48,10 @@ HEADERS  += \
     src/model/flv_audio.h \
     src/controller/flv_parser.h \
     src/commons/read_bytes.h \
-    src/model/flv_script.h
+    src/model/flv_script.h \
+    src/view/about_dialog.h \
+    src/view/main_menubar.h \
+    src/commons/definations.h
 RESOURCES += \
     resource.qrc
 

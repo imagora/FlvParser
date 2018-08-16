@@ -68,6 +68,7 @@ void MainWidget::InitWidget() {
 
   http_client_ = new HttpClient(this);
   flv_parser_ = new FlvParser(this);
+  menu_bar_ = new MenuBar(this);
 }
 
 void MainWidget::InitSlots() {

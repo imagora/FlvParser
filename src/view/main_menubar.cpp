@@ -9,7 +9,7 @@
 namespace flv_parser {
 
 
-MenuBar::MenuBar(QWidget *parent/* = nullptr*/)
+MainMenuBar::MainMenuBar(QWidget *parent/* = nullptr*/)
   : QMenuBar(parent) {
   help_menu_ = new QMenu("Help", this);
   help_menu_->addAction("Help", this, SLOT(OpenAboutDlg()));
@@ -17,10 +17,10 @@ MenuBar::MenuBar(QWidget *parent/* = nullptr*/)
   addMenu(help_menu_);
 }
 
-MenuBar::~MenuBar() {
+MainMenuBar::~MainMenuBar() {
 }
 
-void MenuBar::OpenAboutDlg() {
+void MainMenuBar::OpenAboutDlg() {
   about_dlg_ = new AboutDialog(this);
   about_dlg_->show();
 }

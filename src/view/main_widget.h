@@ -49,7 +49,7 @@ class MainWidget : public QWidget {
   QTreeView *info_view_;
   QStandardItemModel *info_model_;
 
-  MenuBar *menu_bar_;
+  MainMenuBar *menu_bar_;
 
   HttpClient *http_client_;
   FlvParser *flv_parser_;

@@ -16,12 +16,12 @@
 namespace flv_parser {
 
 
-class MenuBar : public QMenuBar {
+class MainMenuBar : public QMenuBar {
   Q_OBJECT
 
  public:
-  MenuBar(QWidget *parent = nullptr);
-  ~MenuBar();
+  MainMenuBar(QWidget *parent = nullptr);
+  ~MainMenuBar();
 
  private slots:
   void OpenAboutDlg();

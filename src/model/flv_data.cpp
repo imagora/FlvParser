@@ -23,6 +23,10 @@ std::string FlvData::Info() {
   return "";
 }
 
+const std::string &FlvData::Data() {
+  return data_;
+}
+
 
 }  // namespace flv_parser
 

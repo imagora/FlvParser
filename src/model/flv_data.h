@@ -22,6 +22,8 @@ class FlvData {
 
   virtual std::string Info();
 
+  virtual const std::string &Data();
+
  private:
   std::string data_;
 };

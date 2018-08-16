@@ -13,8 +13,6 @@ include(gitversion.pri)
 # PART 2: target, library, flags
 TARGET = bin/FlvParser
 INCLUDEPATH += src
-INCLUDEPATH += /usr/local/include
-LIBS += -L/usr/lib -L/usr/local/lib -llog4cplus
 DEFINES += QT_DEPRECATED_WARNINGS
 DEFINES += BUILD_VERSION=\\\"$$VERSION\\\"
 
@@ -52,4 +50,11 @@ HEADERS  += \
     src/model/flv_script.h
 RESOURCES += \
     resource.qrc
-ICON = icon.icns
+
+win32 {
+  RC_FILE = resource.rc
+}
+
+macx {
+  ICON = icon.icns
+}

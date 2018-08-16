@@ -137,3 +137,4 @@ VERSION = $$VER_MAJOR"."$$VER_MINOR"."$$VER_PATCH
 
 # Display the complete version string
 message(~~~ BUILD_VERSION_INFO: $$BUILD_VERSION_INFO ~~~)
+message(~~~ BUILD_DATETIME_INFO: $$DATE_YY-$$DATE_MM-$$DATE_DD $$BUILD_TIME ~~~)

@@ -4,8 +4,10 @@
 
 #pragma once  // NOLINT(build/header_guard)
 
-#if !defined(BUILD_DATE_TIME)
-#define BUILD_DATE_TIME __DATE__ " " __TIME__
+#if !defined(DATE_YY) || !defined(DATE_MM) || !defined(DATE_DD) || !defined(BUILD_TIME)
+#define BUILD_DATETIME "Unknown"
+#else
+#define BUILD_DATETIME DATE_YY "-" DATE_MM "-" DATE_DD " " BUILD_TIME
 #endif
 
 #if !defined(BUILD_VERSION)

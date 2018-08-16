@@ -44,7 +44,6 @@ HEADERS  += \
     src/model/flv_data.h \
     src/model/flv_video.h \
     src/model/flv_audio.h \
-    src/commons/error_code.h \
     src/controller/flv_parser.h \
     src/commons/read_bytes.h \
     src/model/flv_script.h

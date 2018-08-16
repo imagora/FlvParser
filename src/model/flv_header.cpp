@@ -6,7 +6,6 @@
 
 #include <QDebug>
 
-#include "commons/error_code.h"
 #include "commons/read_bytes.h"
 
 

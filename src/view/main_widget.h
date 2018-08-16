@@ -8,6 +8,8 @@
 #include <QWidget>
 #include <QTreeView>
 #include <QLineEdit>
+#include <QTextEdit>
+#include <QKeyEvent>
 #include <QPushButton>
 #include <QStandardItemModel>
 #include <QNetworkReply>
@@ -29,25 +31,37 @@ class MainWidget : public QWidget {
 
   virtual ~MainWidget();
 
+ protected:
+  void keyReleaseEvent(QKeyEvent *event) override;
+
  private slots:
   void OnPlay();
 
-  void ReadyRead(const std::string &data);
+  void OnReadyRead(const std::string &data);
 
-  void Finished();
+  void OnFinished();
 
   void OnFlvPacket(const std::string &type, const std::string &info);
+
+  void OnSelectPacket(const QModelIndex &index);
 
  private:
   void InitWidget();
 
   void InitSlots();
 
+  void Reset();
+
+  void ShowDetail(int index);
+
  private:
   QLineEdit *url_;
   QPushButton *play_;
+  QTextEdit *hex_view_;
   QTreeView *info_view_;
+  QTreeView *detail_view_;
   QStandardItemModel *info_model_;
+  QStandardItemModel *detail_model_;
 
   MainMenuBar *menu_bar_;
 

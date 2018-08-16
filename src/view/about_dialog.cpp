@@ -30,7 +30,7 @@ AboutDialog::AboutDialog(QWidget *parent)
                                    this);
 
   QLabel *version_label = new QLabel(tr("Version: ") + tr(BUILD_VERSION) +
-                                     tr("\nBuilt: ") + tr(BUILD_DATE_TIME) +
+                                     tr("\nBuilt: ") + tr(BUILD_DATETIME) +
                                      tr("\nCopyright (c) 2018 winking324"),
                                      this);
 

@@ -125,6 +125,17 @@ void MainWidget::Show(int index) {
 }
 
 void MainWidget::ShowDetail(const Json::Value &root, QStandardItem *root_item) {
+  if (!root.isObject()) {
+    QStandardItem *value_item = new QStandardItem(root.asString().c_str());
+    value_item->setEditable(false);
+    if (root_item == nullptr) {
+      detail_model_->appendRow(value_item);
+    } else {
+      root_item->appendRow(value_item);
+    }
+    return;
+  }
+
   Json::Value::Members members = root.getMemberNames();
   for (auto iter = members.begin(); iter != members.end(); ++iter) {
     QStandardItem *name_item = new QStandardItem(iter->c_str());

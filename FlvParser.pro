@@ -22,8 +22,8 @@ win32 {
 }
 
 macx {
-  INCLUDEPATH += $$PWD/third_party/mac/jsoncpp/include
-  LIBS += -L$$PWD/third_party/mac/jsoncpp/lib -ljsoncpp
+  INCLUDEPATH += $$PWD/third_party/mac/yaml-cpp/include
+  LIBS += -L$$PWD/third_party/mac/yaml-cpp/lib -lyaml-cpp
 }
 
 #---------------------------------------------------------------------

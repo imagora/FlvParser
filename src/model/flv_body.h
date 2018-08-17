@@ -6,6 +6,7 @@
 
 
 #include <inttypes.h>
+#include <yaml-cpp/yaml.h>
 #include "model/flv_tag.h"
 
 
@@ -21,6 +22,10 @@ class FlvBody {
   std::string Type();
 
   std::string Info();
+
+  YAML::Node Detail();
+
+  std::string Data();
 
  private:
   uint32_t previous_size_;

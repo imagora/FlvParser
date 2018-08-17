@@ -23,6 +23,10 @@ std::string FlvData::Info() {
   return "";
 }
 
+YAML::Node FlvData::Detail() {
+  return YAML::Node();
+}
+
 const std::string &FlvData::Data() {
   return data_;
 }

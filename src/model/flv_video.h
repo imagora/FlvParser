@@ -47,6 +47,16 @@ class FlvVideo : public FlvData {
   virtual size_t ParseData(const std::string &data, size_t pos,
                            size_t length) override;
 
+  virtual YAML::Node Detail() override;
+
+  std::string FrameType();
+
+  std::string CodecID();
+
+  std::string AVCPacketType();
+
+  std::string CompositionTime();
+
  private:
   uint8_t frame_type_;
   uint8_t codec_id_;

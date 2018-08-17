@@ -39,8 +39,8 @@ enum AudioSampleRate {
 
 
 enum AuidoSampleSize {
-  AUIDO_SIZE_8_BIT_SAMPLES = 0,
-  AUIDO_SIZE_16_BIT_SAMPLES = 1,
+  AUDIO_SIZE_8_BIT_SAMPLES = 0,
+  AUDIO_SIZE_16_BIT_SAMPLES = 1,
 };
 
 
@@ -64,6 +64,18 @@ class FlvAudio : public FlvData {
 
   virtual size_t ParseData(const std::string &data, size_t pos,
                            size_t length) override;
+
+  virtual YAML::Node Detail() override;
+
+  std::string SoundFormat();
+
+  std::string SoundRate();
+
+  std::string SoundSize();
+
+  std::string SoundType();
+
+  std::string AACPacketType();
 
  private:
   uint8_t format_;

@@ -31,78 +31,105 @@ enum ScriptDataValueType {
   SCRIPT_DATA_DATE = 11,
   SCRIPT_DATA_LONG_STRING = 12,
 
-  SCRIPT_DATA_VALUE = UINT32_MAX,
+  SCRIPT_DATA_VALUE = UINT8_MAX,
 };
 
 
 struct FlvScriptData {
   virtual ~FlvScriptData() {}
+  virtual YAML::Node Detail() const = 0;
 };
 
 
 struct FlvScriptDataValue : public FlvScriptData {
+  virtual YAML::Node Detail() const override;
+
+  std::string Type() const;
+
   uint8_t type_;
   std::shared_ptr<FlvScriptData> value_;
 };
 
 
 struct FlvScriptDataNumber : public FlvScriptData {
+  virtual YAML::Node Detail() const override;
+
   double double_data_;
 };
 
 
 struct FlvScriptDataBool : public FlvScriptData {
+  virtual YAML::Node Detail() const override;
+
   uint8_t bool_data_;
 };
 
 
 struct FlvScriptDataReference : public FlvScriptData {
+  virtual YAML::Node Detail() const override;
+
   uint16_t reference_data_;
 };
 
 
 struct FlvScriptDataString : public FlvScriptData {
+  virtual YAML::Node Detail() const override;
+
   uint16_t string_length_;
   std::string string_data_;
 };
 
 
 struct FlvScriptDataLongString : public FlvScriptData {
+  virtual YAML::Node Detail() const override;
+
   uint32_t string_length_;
   std::string string_data_;
 };
 
 
 struct FlvScriptDataStrictArray : public FlvScriptData {
+  virtual YAML::Node Detail() const override;
+
   uint32_t strict_array_length_;
   std::list<FlvScriptDataValue> strict_array_value_;
 };
 
 
 struct FlvScriptDataDate : public FlvScriptData {
+  virtual YAML::Node Detail() const override;
+
   double date_time_;
   int16_t local_date_time_offset_;
 };
 
 
 struct FlvScriptDataObjectEnd : public FlvScriptData {
+  virtual YAML::Node Detail() const override;
+
   uint8_t object_end_marker_[3] = {0x0, 0x0, 0x9};
 };
 
 
 struct FlvScriptDataObjectProperty : public FlvScriptData {
+  virtual YAML::Node Detail() const override;
+
   FlvScriptDataString property_name_;
   FlvScriptDataValue property_data_;
 };
 
 
 struct FlvScriptDataObject : public FlvScriptData {
+  virtual YAML::Node Detail() const override;
+
   std::list<FlvScriptDataObjectProperty> object_properties_;
   FlvScriptDataObjectEnd list_terminator_;
 };
 
 
 struct FlvScriptDataEcmaArrary : public FlvScriptData {
+  virtual YAML::Node Detail() const override;
+
   uint32_t ecma_array_length_;
   std::list<FlvScriptDataObjectProperty> variables_;
   FlvScriptDataObjectEnd list_terminator_;
@@ -126,7 +153,10 @@ class FlvScript : public FlvData {
 
   ~FlvScript();
 
-  virtual size_t ParseData(const std::string &data, size_t pos, size_t length);
+  virtual size_t ParseData(const std::string &data, size_t pos,
+                           size_t length) override;
+
+  virtual YAML::Node Detail() override;
 
  private:
   size_t ParseDataValue(const std::string &data, size_t pos, size_t length,

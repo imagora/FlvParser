@@ -7,6 +7,7 @@
 
 #include <inttypes.h>
 #include <memory>
+#include <yaml-cpp/yaml.h>
 #include "model/flv_data.h"
 
 
@@ -29,6 +30,10 @@ class FlvTag {
   std::string Type();
 
   std::string Info();
+
+  YAML::Node Detail();
+
+  std::string Data();
 
  private:
   size_t ParseAudio(const std::string &data, size_t pos);

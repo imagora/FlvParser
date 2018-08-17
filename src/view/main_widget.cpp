@@ -81,6 +81,7 @@ void MainWidget::InitWidget() {
 
   info_view_->setModel(info_model_);
   detail_view_->setModel(detail_model_);
+  hex_view_->setFontFamily("Monaco");
 
   Reset();
 
@@ -114,19 +115,24 @@ void MainWidget::Reset() {
   detail_model_->clear();
   hex_view_->clear();
   info_model_->setHorizontalHeaderLabels(QStringList() << "Type" << "Info");
-  detail_model_->setHorizontalHeaderLabels(QStringList() << "Detail");
+  detail_model_->setHorizontalHeaderLabels(
+        QStringList() << "Detail" << "Value");
 }
 
 void MainWidget::Show(int index) {
   detail_model_->clear();
-  detail_model_->setHorizontalHeaderLabels(QStringList() << "Detail");
-  Json::Value root = flv_parser_->Detail(index);
+  detail_model_->setHorizontalHeaderLabels(
+        QStringList() << "Detail" << "Value");
+  YAML::Node root = flv_parser_->Detail(index);
   ShowDetail(root);
+  std::string data = flv_parser_->Data(index);
+  ShowData(data);
 }
 
-void MainWidget::ShowDetail(const Json::Value &root, QStandardItem *root_item) {
-  if (!root.isObject()) {
-    QStandardItem *value_item = new QStandardItem(root.asString().c_str());
+void MainWidget::ShowDetail(const YAML::Node &root, QStandardItem *root_item) {
+  if (!root.IsMap()) {
+    QStandardItem *value_item =
+        new QStandardItem(root.as<std::string>().c_str());
     value_item->setEditable(false);
     if (root_item == nullptr) {
       detail_model_->appendRow(value_item);
@@ -136,9 +142,9 @@ void MainWidget::ShowDetail(const Json::Value &root, QStandardItem *root_item) {
     return;
   }
 
-  Json::Value::Members members = root.getMemberNames();
-  for (auto iter = members.begin(); iter != members.end(); ++iter) {
-    QStandardItem *name_item = new QStandardItem(iter->c_str());
+  for (auto iter = root.begin(); iter != root.end(); ++iter) {
+    QStandardItem *name_item =
+        new QStandardItem(iter->first.as<std::string>().c_str());
     name_item->setEditable(false);
     if (root_item == nullptr) {
       detail_model_->appendRow(name_item);
@@ -146,16 +152,15 @@ void MainWidget::ShowDetail(const Json::Value &root, QStandardItem *root_item) {
       root_item->appendRow(name_item);
     }
 
-    uint32_t value_type = root[*iter].type();
-    if (value_type == Json::objectValue) {
-      ShowDetail(root[*iter], name_item);
-    } else if (value_type == Json::arrayValue) {
-      for (uint32_t i = 0; i < root[*iter].size(); ++i) {
-        ShowDetail(root[*iter][i], name_item);
+    if (iter->second.IsMap()) {
+      ShowDetail(iter->second, name_item);
+    } else if (iter->second.IsSequence()) {
+      for (auto seq_iter = iter->second.begin(); seq_iter != iter->second.end(); ++seq_iter) {
+        ShowDetail(*seq_iter, name_item);
       }
     } else {
       QStandardItem *info_item =
-          new QStandardItem(root[*iter].asString().c_str());
+          new QStandardItem(iter->second.as<std::string>().c_str());
       info_item->setEditable(false);
 
       if (root_item == nullptr) {
@@ -166,6 +171,37 @@ void MainWidget::ShowDetail(const Json::Value &root, QStandardItem *root_item) {
       }
     }
   }
+  detail_view_->expandAll();
+}
+
+void MainWidget::ShowData(const std::string &data) {
+  QByteArray bytes = QByteArray::fromStdString(data);
+  int address_size =
+      QString("%1").arg(bytes.size() + 0, 4, 16, QChar('0')).size();
+
+  QString result;
+  for (int i= 0; i < bytes.size(); i += 16) {
+    QString adrStr = QString("%1").arg(0 + i, address_size, 16, QChar('0'));
+    QString hexStr;
+    QString ascStr;
+    for (int j=0; j<16; j++) {
+      if ((i + j) < bytes.size()) {
+        hexStr.append(" ").append(bytes.mid(i+j, 1).toHex());
+        ascStr.append(AsciiChar(bytes, i+j));
+      }
+    }
+    result += adrStr + " " + QString("%1").arg(hexStr, -48) +
+        "  " + QString("%1").arg(ascStr, -17) + "\n";
+  }
+
+  hex_view_->clear();
+  hex_view_->setText(result);
+}
+
+QChar MainWidget::AsciiChar(const QByteArray &data, int index) {
+  char ch = data[index];
+  if ((ch < 0x20) || (ch > 0x7e)) ch = '.';
+  return QChar(ch);
 }
 
 }  // namespace flv_parser

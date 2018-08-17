@@ -45,6 +45,17 @@ std::string FlvBody::Info() {
   return ss.str();
 }
 
+YAML::Node FlvBody::Detail() {
+  YAML::Node root;
+  root["PreviousTagSize"] = previous_size_;
+  root["Tag"] = tag_.Detail();
+  return root;
+}
+
+std::string FlvBody::Data() {
+  return tag_.Data();
+}
+
 
 }  // namespace flv_parser
 

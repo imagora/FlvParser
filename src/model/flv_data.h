@@ -5,8 +5,9 @@
 #pragma once  // NOLINT(build/header_guard)
 
 
-#include <inttypes.h>
 #include <string>
+#include <inttypes.h>
+#include <yaml-cpp/yaml.h>
 
 
 namespace flv_parser {
@@ -21,6 +22,8 @@ class FlvData {
   virtual size_t ParseData(const std::string &data, size_t pos, size_t length);
 
   virtual std::string Info();
+
+  virtual YAML::Node Detail();
 
   virtual const std::string &Data();
 

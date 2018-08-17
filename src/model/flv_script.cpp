@@ -12,6 +12,137 @@
 namespace flv_parser {
 
 
+YAML::Node FlvScriptDataValue::Detail() const {
+  YAML::Node root;
+  root["Type"] = Type();
+  root["ScriptDataValue"] = value_->Detail();
+  return root;
+}
+
+std::string FlvScriptDataValue::Type() const {
+  switch (type_) {
+    case SCRIPT_DATA_NUMBER:
+      return "Number";
+    case SCRIPT_DATA_BOOLEAN:
+      return "Boolean";
+    case SCRIPT_DATA_STRING:
+      return "String";
+    case SCRIPT_DATA_OBJECT:
+      return "Object";
+    case SCRIPT_DATA_MOVIE_CLIP:
+      return "MovieClip (reserved, not supported)";
+    case SCRIPT_DATA_NULL:
+      return "Null";
+    case SCRIPT_DATA_UNDEFINED:
+      return "Undefined";
+    case SCRIPT_DATA_REFERENCE:
+      return "Reference";
+    case SCRIPT_DATA_ECMA_ARRAY:
+      return "ECMA array";
+    case SCRIPT_DATA_OBJECT_END_MARKER:
+      return "Object end marker";
+    case SCRIPT_DATA_STRICT_ARRAY:
+      return "Strict array";
+    case SCRIPT_DATA_DATE:
+      return "Date";
+    case SCRIPT_DATA_LONG_STRING:
+      return "Long string";
+    case SCRIPT_DATA_VALUE:
+      return "Data value";
+    default:
+      return "Unknown data type";
+  }
+}
+
+YAML::Node FlvScriptDataNumber::Detail() const {
+  YAML::Node root;
+  root["Double"] = double_data_;
+  return root;
+}
+
+YAML::Node FlvScriptDataBool::Detail() const {
+  YAML::Node root;
+  root["Boolean"] = bool_data_;
+  return root;
+}
+
+YAML::Node FlvScriptDataReference::Detail() const {
+  YAML::Node root;
+  root["Reference"] = reference_data_;
+  return root;
+}
+
+YAML::Node FlvScriptDataString::Detail() const {
+  YAML::Node root;
+  root["StringLength"] = static_cast<uint32_t>(string_length_);
+  root["StringData"] = string_data_;
+  return root;
+}
+
+YAML::Node FlvScriptDataLongString::Detail() const {
+  YAML::Node root;
+  root["StringLength"] = string_length_;
+  root["StringData"] = string_data_;
+  return root;
+}
+
+YAML::Node FlvScriptDataStrictArray::Detail() const {
+  YAML::Node root;
+  root["StrictArrayLength"] = strict_array_length_;
+
+  YAML::Node array(YAML::NodeType::Sequence);
+  for (const FlvScriptDataValue &val : strict_array_value_) {
+    array.push_back(val.Detail());
+  }
+  root["StrictArrayValue"] = array;
+  return root;
+}
+
+YAML::Node FlvScriptDataDate::Detail() const {
+  YAML::Node root;
+  root["DateTime"] = date_time_;
+  root["LocalDateTimeOffset"] = static_cast<int>(local_date_time_offset_);
+  return root;
+}
+
+YAML::Node FlvScriptDataObjectEnd::Detail() const {
+  YAML::Node root;
+  root["ObjectEndMarker"] = "0x00 00 09";
+  return root;
+}
+
+YAML::Node FlvScriptDataObjectProperty::Detail() const {
+  YAML::Node root;
+  root["PropertyName"] = property_name_.Detail();
+  root["PropertyData"] = property_data_.Detail();
+  return root;
+}
+
+YAML::Node FlvScriptDataObject::Detail() const {
+  YAML::Node root;
+
+  YAML::Node array(YAML::NodeType::Sequence);
+  for (const FlvScriptDataObjectProperty &val : object_properties_) {
+    array.push_back(val.Detail());
+  }
+  root["ObjectProperties"] = array;
+  root["ListTerminator"] = list_terminator_.Detail();
+  return root;
+}
+
+YAML::Node FlvScriptDataEcmaArrary::Detail() const {
+  YAML::Node root;
+  root["ECMAArrayLength"] = ecma_array_length_;
+
+  YAML::Node array(YAML::NodeType::Sequence);
+  for (const FlvScriptDataObjectProperty &val : variables_) {
+    array.push_back(val.Detail());
+  }
+  root["Variables"] = array;
+  root["ListTerminator"] = list_terminator_.Detail();
+  return root;
+}
+
 FlvScript::FlvScript() {
   parser_ = {
     {SCRIPT_DATA_NUMBER, &FlvScript::ParseDataNumber},
@@ -50,6 +181,13 @@ size_t FlvScript::ParseData(const std::string &data, size_t pos,
   read_pos += ParseDataValue(data, read_pos, length - read_pos + pos,
                              &value_);
   return length;
+}
+
+YAML::Node FlvScript::Detail() {
+  YAML::Node root;
+  root["Name"] = name_.Detail();
+  root["Value"] = value_.Detail();
+  return root;
 }
 
 size_t FlvScript::ParseDataValue(const std::string &data, size_t pos,

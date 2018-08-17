@@ -54,7 +54,11 @@ class MainWidget : public QWidget {
 
   void Show(int index);
 
-  void ShowDetail(const Json::Value &root, QStandardItem *root_item = nullptr);
+  void ShowDetail(const YAML::Node &root, QStandardItem *root_item = nullptr);
+
+  void ShowData(const std::string &data);
+
+  QChar AsciiChar(const QByteArray &data, int index);
 
  private:
   QLineEdit *url_;

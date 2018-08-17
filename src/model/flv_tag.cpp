@@ -109,6 +109,28 @@ std::string FlvTag::Info() {
   return ss.str();
 }
 
+YAML::Node FlvTag::Detail() {
+  YAML::Node root;
+  root["Reserved"] = static_cast<uint32_t>(reserved_);
+  root["Filter"] = static_cast<uint32_t>(filter_);
+  root["TagType"] = Type();
+  root["DataSize"] = size_;
+  root["Timestamp"] = timestamp_;
+  root["TimestampExtended"] = static_cast<uint32_t>(timestamp_extended_);
+  root["StreamID"] = stream_id_;
+  if (data_) {
+    root[Type()] = data_->Detail();
+  }
+  return root;
+}
+
+std::string FlvTag::Data() {
+  if (data_) {
+    return data_->Data();
+  }
+  return "";
+}
+
 size_t FlvTag::ParseAudio(const std::string &data, size_t pos) {
   data_.reset(new FlvAudio());
   return data_->ParseData(data, pos, size_);

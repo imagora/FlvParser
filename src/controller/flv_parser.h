@@ -5,7 +5,7 @@
 #pragma once  // NOLINT(build/header_guard)
 
 
-#include <list>
+#include <vector>
 #include <string>
 #include <QObject>
 #include "model/flv_header.h"
@@ -18,7 +18,7 @@ namespace flv_parser {
 class FlvParser : public QObject {
   Q_OBJECT
 
-  typedef std::list<FlvBody> FlvBodys;
+  typedef std::vector<FlvBody> FlvBodys;
  public:
   FlvParser(QObject *parent = nullptr);
 
@@ -28,7 +28,7 @@ class FlvParser : public QObject {
 
   void Reset();
 
-  Json::Value Detail(int index);
+  YAML::Node Detail(int index);
 
   std::string Data(int index);
 

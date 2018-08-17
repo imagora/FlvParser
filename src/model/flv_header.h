@@ -8,7 +8,7 @@
 #include <inttypes.h>
 #include <string>
 
-#include <json/json.h>
+#include <yaml-cpp/yaml.h>
 
 
 namespace flv_parser {
@@ -24,7 +24,7 @@ class FlvHeader {
 
   std::string Info();
 
-  Json::Value Detail();
+  YAML::Node Detail();
 
  private:
   uint8_t signature_[3];

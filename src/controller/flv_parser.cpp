@@ -42,18 +42,26 @@ void FlvParser::Reset() {
   has_header_ = false;
 }
 
-Json::Value FlvParser::Detail(int index) {
-  if (index == 0) {
+YAML::Node FlvParser::Detail(int index) {
+  if (index <= 0) {
     return flv_header_.Detail();
   }
-  return Json::Value();
+
+  if (static_cast<size_t>(index) > flv_bodys_.size()) {
+    return YAML::Node();
+  }
+
+  return flv_bodys_[static_cast<size_t>(index - 1)].Detail();
 }
 
 std::string FlvParser::Data(int index) {
-  if (index == 0) {
+  if (index <= 0) {
     return "";
   }
-  return "";
+
+  if (static_cast<size_t>(index) > flv_bodys_.size()) return "";
+
+  return flv_bodys_[static_cast<size_t>(index - 1)].Data();
 }
 
 size_t FlvParser::ParseHeader() {

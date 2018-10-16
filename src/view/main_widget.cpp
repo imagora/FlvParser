@@ -33,12 +33,12 @@ void MainWidget::keyReleaseEvent(QKeyEvent *event) {
 }
 
 void MainWidget::OnPlay() {
-  if (url_->text().isEmpty()) return;
+  if (url_->text().trimmed().isEmpty()) return;
 
   if (play_->text() == "Play") {
     Reset();
     play_->setText("Stop");
-    http_client_->HttpRequest(url_->text());
+    http_client_->HttpRequest(url_->text().trimmed());
   } else {
     http_client_->HttpAbort();
   }

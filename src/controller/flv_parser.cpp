@@ -40,6 +40,7 @@ bool FlvParser::ParseData(const std::string &data) {
 void FlvParser::Reset() {
   buffer_.clear();
   has_header_ = false;
+  flv_bodys_.clear();
 }
 
 YAML::Node FlvParser::Detail(int index) {

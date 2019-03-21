@@ -20,6 +20,10 @@
 
 ![](sample.png)
 
+## 下载地址
+
+* mac：https://pan.baidu.com/s/1tPhQB3c0moK39qypcAuNTg qgpw
+
 ## 捐赠
 
 如果 FLV Parser 对您有所帮助，欢迎进行捐赠以支持该项目发展。
